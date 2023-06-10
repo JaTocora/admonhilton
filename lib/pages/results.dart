@@ -25,6 +25,7 @@ class ResultsScreen extends ConsumerWidget {
                 ? const Text("Pending Report List")
                 : const Text("Fix List")),
         bottomNavigationBar: BottomAppBar(
+          height: 100,
           color: Colors.blue,
           shape: const CircularNotchedRectangle(),
           child: Row(
@@ -46,6 +47,7 @@ class ResultsScreen extends ConsumerWidget {
                 padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 40, 10),
                 child: IconButton(
                   iconSize: 36,
+                  constraints: const BoxConstraints(),
                   color: Colors.white,
                   icon: const Icon(Icons.construction),
                   onPressed: () {
@@ -92,9 +94,10 @@ class ResultsScreen extends ConsumerWidget {
                         itemBuilder: (context, element) {
                           final locationsDataList = ref.watch(
                               locationProvider(element.location.toString()));
-                          final usersDataList = ref.watch(userProvider(datalist
-                              ? element.uidemployeeadd.toString()
-                              : element.uidemployeeupd.toString()));
+                          final usersReportDataList = ref.watch(
+                              userProvider(element.uidemployeeadd.toString()));
+                          // final usersFixDataList = ref.watch(
+                          //     userProvider(element.uidemployeeupd.toString()));
                           // ignore: unused_local_variable
                           final imagenreportDataList = ref.watch(
                               imageProvider(element.uidphotoreport.toString()));
@@ -112,9 +115,10 @@ class ResultsScreen extends ConsumerWidget {
                                   element.uidphotofix.toString()));
                               final locations = ref.read(locationProvider(
                                   element.location.toString()));
-                              final users = ref.read(userProvider(datalist
-                                  ? element.uidemployeeadd.toString()
-                                  : element.uidemployeeupd.toString()));
+                              final userreport = ref.read(userProvider(
+                                  element.uidemployeeadd.toString()));
+                              final userfix = ref.read(userProvider(
+                                  element.uidemployeeupd.toString()));
 
                               datalist
                                   ? dialogpreview(
@@ -122,7 +126,7 @@ class ResultsScreen extends ConsumerWidget {
                                       screenSize,
                                       locations,
                                       element,
-                                      users,
+                                      userreport,
                                       imagereport,
                                       datalist)
                                   : dialogfix(
@@ -130,7 +134,8 @@ class ResultsScreen extends ConsumerWidget {
                                       screenSize,
                                       locations,
                                       element,
-                                      users,
+                                      userreport,
+                                      userfix,
                                       imagereport,
                                       imagefix,
                                       datalist);
@@ -252,7 +257,7 @@ class ResultsScreen extends ConsumerWidget {
                                                                         left:
                                                                             6.0),
                                                                 child: Text(
-                                                                  usersDataList
+                                                                  usersReportDataList
                                                                       .value
                                                                       .toString(),
                                                                   textAlign:
@@ -377,12 +382,11 @@ class ResultsScreen extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          // contentPadding: EdgeInsets.zero,
           content: SizedBox(
             width: screenSize.width *
                 0.8, // Ancho del AlertDialog al 80% del ancho de la pantalla
             height: screenSize.height *
-                0.9, // Alto del AlertDialog al 50% del alto de la pantalla
+                0.5, // Alto del AlertDialog al 50% del alto de la pantalla
             child: Scrollable(
               viewportBuilder: (BuildContext context, ViewportOffset position) {
                 return SingleChildScrollView(
@@ -508,8 +512,6 @@ class ResultsScreen extends ConsumerWidget {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      // expandedUser(
-                                      //     users.value.toString(), datalist),
                                       Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
@@ -634,6 +636,7 @@ class ResultsScreen extends ConsumerWidget {
               },
             ),
           ),
+
           // title: Row(
           //   mainAxisAlignment: MainAxisAlignment.end,
           //   children: [
@@ -653,7 +656,8 @@ class ResultsScreen extends ConsumerWidget {
       Size screenSize,
       AsyncValue<String> locations,
       Clsdata element,
-      AsyncValue<String> users,
+      AsyncValue<String> userreport,
+      AsyncValue<String> userfix,
       AsyncValue<String> imagereport,
       AsyncValue<String> imagefix,
       bool datalist) {
@@ -662,6 +666,7 @@ class ResultsScreen extends ConsumerWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           // contentPadding: EdgeInsets.zero,
+
           content: SizedBox(
             width: screenSize.width *
                 0.8, // Ancho del AlertDialog al 80% del ancho de la pantalla
@@ -818,7 +823,7 @@ class ResultsScreen extends ConsumerWidget {
                                                 color: Color(0xFFF1F4F8),
                                               ),
                                               Text(
-                                                users.value.toString(),
+                                                userreport.value.toString(),
                                                 style: const TextStyle(
                                                     fontSize: 14),
                                               ),
@@ -1004,7 +1009,7 @@ class ResultsScreen extends ConsumerWidget {
                                                 color: Color(0xFFF1F4F8),
                                               ),
                                               Text(
-                                                users.value.toString(),
+                                                userfix.value.toString(),
                                                 style: const TextStyle(
                                                     fontSize: 14),
                                               ),

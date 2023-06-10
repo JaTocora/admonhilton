@@ -59,7 +59,6 @@ final userProvider = StreamProvider.family<String, String>((ref, id) async* {
   final collection = FirebaseFirestore.instance.collection('users');
   yield* collection.doc(id).snapshots().map((snapshot) {
     String nameuser = '${snapshot['first_name']} ${snapshot['last_name']}';
-    // return snapshot.get('first_name') as String;
     return nameuser;
   });
 });
