@@ -73,7 +73,7 @@ class MyApp extends ConsumerWidget {
         onPointerMove: _handleInteraction,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Material App',
+          title: 'Reports Hilton Altamonte',
           theme: ThemeData(fontFamily: 'Poppins'),
           initialRoute: LoginScreen.route,
           // home: LoginScreen(auth: _auth),
